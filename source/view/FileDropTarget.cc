@@ -42,10 +42,14 @@ auto FileDropTarget::OnDropFiles(wxCoord, wxCoord, const wxArrayString &files)
     if (size > 0) {
         wxString filename = files[0];
 
+        if (filename.Length() < 4) {
+            return false;
+        }
+
         wxString ext = filename.Mid(filename.Length() - 4);
 
-        if (ext.CmpNoCase(wxT(".sav")) != 0) {
-            wxMessageBox(wxT("Only NES SRAM (*.sav) files can be dropped."),
+        if (ext.CmpNoCase(wxT(".sav")) != 0 && ext.CmpNoCase(wxT(".srm")) != 0) {
+            wxMessageBox(wxT("Only NES SRAM (*.sav, *.srm) files can be dropped."),
                          wxT("Error: Invalid File Drop"), wxICON_ERROR | wxOK);
 
             return false;

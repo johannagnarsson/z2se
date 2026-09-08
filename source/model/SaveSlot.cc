@@ -38,14 +38,20 @@ SaveSlot::SaveSlot(const char *nvram) {
     this->nvram = new unsigned char[GAME_SIZE];
     memcpy(this->nvram, nvram, GAME_SIZE);
 
-    valid = (nvram[NAME_OFFSET] != '\xF4');
+    valid = false;
+    for (int pos = 0; pos < 8; pos++) {
+        if (this->nvram[NAME_OFFSET + pos] != static_cast<unsigned char>('\xF4')) {
+            valid = true;
+            break;
+        }
+    }
 
     setModified(false);
 
     checkForNewGame();
 }
 
-SaveSlot::~SaveSlot() { delete nvram; }
+SaveSlot::~SaveSlot() { delete[] nvram; }
 
 void SaveSlot::checkForNewGame() {
     if (nvram[TRIFORCE_OFFSET] == 1) {
@@ -58,10 +64,10 @@ void SaveSlot::checkForNewGame() {
         setItem(GLOVE, false);
         setItem(RAFT, false);
         setItem(BOOTS, false);
-        setItem(CROSS, false);
         setItem(FLUTE, false);
-        setItem(MAGICKEY, false);
+        setItem(CROSS, false);
         setItem(HAMMER, false);
+        setItem(MAGICKEY, false);
 
         for (int palace = 0; palace < 6; palace++) {
             setSeal(palace, false);
@@ -97,6 +103,14 @@ void SaveSlot::setName(wxString &name) {
         }
 
         nvram[NAME_OFFSET + pos] = letter;
+    }
+
+    valid = false;
+    for (int pos = 0; pos < 8; pos++) {
+        if (nvram[NAME_OFFSET + pos] != static_cast<unsigned char>('\xF4')) {
+            valid = true;
+            break;
+        }
     }
 
     setModified();

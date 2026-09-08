@@ -38,14 +38,14 @@
 
 using namespace emuWorks;
 
-SRAMFile::SRAMFile(wxString &filename) {
-    current = -1;
+SRAMFile::SRAMFile(wxString &filename)
+    : file(nullptr), games{nullptr, nullptr, nullptr}, current(-1), data(nullptr) {
     load(filename);
 }
 
 SRAMFile::~SRAMFile() {
     delete file;
-    delete data;
+    delete[] data;
     delete games[0];
     delete games[1];
     delete games[2];
@@ -143,7 +143,8 @@ void SRAMFile::load(wxString &filename) {
                      wxT("File I/O Error"), wxOK | wxICON_ERROR);
 
         in.close();
-        delete data;
+        delete[] data;
+        data = nullptr;
 
         return;
     }

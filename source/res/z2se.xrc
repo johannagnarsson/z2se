@@ -114,8 +114,7 @@
                         <border>0</border>
                         <option>1</option>
                         <object class="wxPanel" name="IDP_PANEL">
-                            <style>wxSUNKEN_BORDER|wxTAB_TRAVERSAL</style>
-                            <bg>#FFFFFF</bg>
+                            <style>wxTAB_TRAVERSAL</style>
                             <object class="wxBoxSizer">
                                 <orient>wxVERTICAL</orient>
                                 <object class="sizeritem">
@@ -473,14 +472,6 @@
                                                                 <object class="sizeritem">
                                                                     <flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL</flag>
                                                                     <border>5</border>
-                                                                    <object class="wxCheckBox" name="IDC_CROSS">
-                                                                        <label>Cross</label>
-                                                                        <checked>0</checked>
-                                                                    </object>
-                                                                </object>
-                                                                <object class="sizeritem">
-                                                                    <flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL</flag>
-                                                                    <border>5</border>
                                                                     <object class="wxCheckBox" name="IDC_FLUTE">
                                                                         <label>Flute</label>
                                                                         <checked>0</checked>
@@ -489,8 +480,8 @@
                                                                 <object class="sizeritem">
                                                                     <flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL</flag>
                                                                     <border>5</border>
-                                                                    <object class="wxCheckBox" name="IDC_MAGIC_KEY">
-                                                                        <label>Magic Key</label>
+                                                                    <object class="wxCheckBox" name="IDC_CROSS">
+                                                                        <label>Cross</label>
                                                                         <checked>0</checked>
                                                                     </object>
                                                                 </object>
@@ -499,6 +490,14 @@
                                                                     <border>5</border>
                                                                     <object class="wxCheckBox" name="IDC_HAMMER">
                                                                         <label>Hammer</label>
+                                                                        <checked>0</checked>
+                                                                    </object>
+                                                                </object>
+                                                                <object class="sizeritem">
+                                                                    <flag>wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                                                                    <border>5</border>
+                                                                    <object class="wxCheckBox" name="IDC_MAGIC_KEY">
+                                                                        <label>Magic Key</label>
                                                                         <checked>0</checked>
                                                                     </object>
                                                                 </object>

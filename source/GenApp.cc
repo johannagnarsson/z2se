@@ -48,6 +48,11 @@ auto GenApp::OnInit() -> bool {
     auto *frame = new MainFrame;
     frame->Show(true);
 
+    if (argc > 1) {
+        wxString filename = argv[1];
+        frame->load(filename);
+    }
+
     return true;
 }
 

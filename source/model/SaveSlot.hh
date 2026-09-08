@@ -72,7 +72,16 @@ namespace emuWorks {
     enum Containers { MAGICCONTAINER, LIFECONTAINER };
 
     /// The game items
-    enum Items { CANDLE, GLOVE, RAFT, BOOTS, CROSS, FLUTE, MAGICKEY, HAMMER };
+    enum Items {
+        CANDLE,
+        GLOVE,
+        RAFT,
+        BOOTS,
+        FLUTE,
+        CROSS,
+        HAMMER,
+        MAGICKEY
+    };
 
     /// The sword techniques
     enum Techniques { DOWNWARDTHRUST = 0x10, UPWARDTHRUST = 0x04 };

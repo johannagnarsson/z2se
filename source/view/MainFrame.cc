@@ -46,7 +46,8 @@ using namespace emuWorks;
 MainFrame::MainFrame() {
     SetParent(nullptr);
     CreateControls();
-    GetSizer()->SetSizeHints(this);
+    GetSizer()->Fit(this);
+    SetMinSize(GetSize());
     Centre();
 
     panel->Show(false);
@@ -147,10 +148,10 @@ void MainFrame::CreateControls() {
     gloveCheck = XRCCTRL(*this, "IDC_GLOVE", wxCheckBox);
     raftCheck = XRCCTRL(*this, "IDC_RAFT", wxCheckBox);
     bootsCheck = XRCCTRL(*this, "IDC_BOOTS", wxCheckBox);
-    crossCheck = XRCCTRL(*this, "IDC_CROSS", wxCheckBox);
     fluteCheck = XRCCTRL(*this, "IDC_FLUTE", wxCheckBox);
-    magicKeyCheck = XRCCTRL(*this, "IDC_MAGIC_KEY", wxCheckBox);
+    crossCheck = XRCCTRL(*this, "IDC_CROSS", wxCheckBox);
     hammerCheck = XRCCTRL(*this, "IDC_HAMMER", wxCheckBox);
+    magicKeyCheck = XRCCTRL(*this, "IDC_MAGIC_KEY", wxCheckBox);
 
     palaceCheck[0] = XRCCTRL(*this, "IDC_PARAPA", wxCheckBox);
     palaceCheck[1] = XRCCTRL(*this, "IDC_MIDORO", wxCheckBox);
@@ -236,10 +237,10 @@ void MainFrame::loadGameData(int game) {
     gloveCheck->SetValue(slot->hasItem(GLOVE));
     raftCheck->SetValue(slot->hasItem(RAFT));
     bootsCheck->SetValue(slot->hasItem(BOOTS));
-    crossCheck->SetValue(slot->hasItem(CROSS));
     fluteCheck->SetValue(slot->hasItem(FLUTE));
-    magicKeyCheck->SetValue(slot->hasItem(MAGICKEY));
+    crossCheck->SetValue(slot->hasItem(CROSS));
     hammerCheck->SetValue(slot->hasItem(HAMMER));
+    magicKeyCheck->SetValue(slot->hasItem(MAGICKEY));
 
     for (int palace = 0; palace < 6; palace++) {
         palaceCheck[palace]->SetValue(slot->hasSeal(palace));
@@ -248,6 +249,9 @@ void MainFrame::loadGameData(int game) {
     keySlider->SetValue(slot->getKeys());
 
     panel->Show(true);
+    GetSizer()->Fit(this);
+    GetSizer()->SetSizeHints(this);
+    Layout();
 }
 
 void MainFrame::load(wxString &filename) {
@@ -283,14 +287,15 @@ void MainFrame::load(wxString &filename) {
 }
 
 void MainFrame::fileOpen(wxCommandEvent &) {
-    static auto *dlg = new wxFileDialog(
-        this, wxT("Choose a .SAV File"), wxT(""), wxT(""),
-        wxT("NES SRAM File (*.sav)|*.sav"), (wxFD_OPEN | wxFD_CHANGE_DIR));
+    wxFileDialog dlg(
+        this, wxT("Choose an SRAM File"), wxT(""), wxT(""),
+        wxT("NES SRAM Files (*.sav;*.srm)|*.sav;*.srm|NES SRAM File (*.sav)|*.sav|RetroArch SRAM File (*.srm)|*.srm|All Files (*.*)|*.*"),
+        (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
-    int value = dlg->ShowModal();
+    int value = dlg.ShowModal();
 
     if (value == wxID_OK) {
-        wxString filename = dlg->GetPath();
+        wxString filename = dlg.GetPath();
         load(filename);
     }
 }
@@ -300,14 +305,15 @@ void MainFrame::fileClose(wxCommandEvent &) { close(); }
 void MainFrame::fileSave(wxCommandEvent &) { sram->save(); }
 
 void MainFrame::fileSaveAs(wxCommandEvent &) {
-    static auto *dlg = new wxFileDialog(
-        this, wxT("Choose a .SAV File"), wxT(""), wxT(""),
-        wxT("NES SRAM File (*.sav)|*.sav"), (wxFD_SAVE | wxFD_CHANGE_DIR));
+    wxFileDialog dlg(
+        this, wxT("Save SRAM File"), wxT(""), wxT(""),
+        wxT("NES SRAM Files (*.sav;*.srm)|*.sav;*.srm|NES SRAM File (*.sav)|*.sav|RetroArch SRAM File (*.srm)|*.srm|All Files (*.*)|*.*"),
+        (wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR));
 
-    int value = dlg->ShowModal();
+    int value = dlg.ShowModal();
 
     if (value == wxID_OK) {
-        wxString filename = dlg->GetPath();
+        wxString filename = dlg.GetPath();
         sram->save(filename);
     }
 }
@@ -403,17 +409,17 @@ void MainFrame::multiChange(wxCommandEvent &event) {
         bootsCheck->SetValue(true);
         game->setItem(BOOTS, true);
 
-        crossCheck->SetValue(true);
-        game->setItem(CROSS, true);
-
         fluteCheck->SetValue(true);
         game->setItem(FLUTE, true);
 
-        magicKeyCheck->SetValue(true);
-        game->setItem(MAGICKEY, true);
+        crossCheck->SetValue(true);
+        game->setItem(CROSS, true);
 
         hammerCheck->SetValue(true);
         game->setItem(HAMMER, true);
+
+        magicKeyCheck->SetValue(true);
+        game->setItem(MAGICKEY, true);
     } else if (id == XRCID("IDM_HAVE_ALL_SEALS")) {
         palaceCheck[0]->SetValue(true);
         game->setSeal(0, true);
@@ -493,17 +499,17 @@ void MainFrame::multiChange(wxCommandEvent &event) {
         bootsCheck->SetValue(false);
         game->setItem(BOOTS, false);
 
-        crossCheck->SetValue(false);
-        game->setItem(CROSS, false);
-
         fluteCheck->SetValue(false);
         game->setItem(FLUTE, false);
 
-        magicKeyCheck->SetValue(false);
-        game->setItem(MAGICKEY, false);
+        crossCheck->SetValue(false);
+        game->setItem(CROSS, false);
 
         hammerCheck->SetValue(false);
         game->setItem(HAMMER, false);
+
+        magicKeyCheck->SetValue(false);
+        game->setItem(MAGICKEY, false);
     } else if (id == XRCID("IDM_HAVE_NONE_SEALS")) {
         palaceCheck[0]->SetValue(false);
         game->setSeal(0, false);
@@ -658,14 +664,14 @@ void MainFrame::itemChange(wxCommandEvent &event) {
         item = RAFT;
     } else if (ctrl == bootsCheck) {
         item = BOOTS;
-    } else if (ctrl == crossCheck) {
-        item = CROSS;
     } else if (ctrl == fluteCheck) {
         item = FLUTE;
-    } else if (ctrl == magicKeyCheck) {
-        item = MAGICKEY;
+    } else if (ctrl == crossCheck) {
+        item = CROSS;
     } else if (ctrl == hammerCheck) {
         item = HAMMER;
+    } else if (ctrl == magicKeyCheck) {
+        item = MAGICKEY;
     }
 
     game->setItem(item, ctrl->IsChecked());

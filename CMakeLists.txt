@@ -1,5 +1,5 @@
 # minimum cmake version
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 # set the project name and version
 project(z2se VERSION 1.2)
@@ -26,7 +26,9 @@ endif()
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
 
 # locate and add wxWidgets
-set(wxWidgets_ROOT_DIR "C:/wxWidgets/3.1.2/release-static")
+if(WIN32)
+  set(wxWidgets_ROOT_DIR "C:/wxWidgets/3.1.2/release-static")
+endif()
 
 find_package(wxWidgets COMPONENTS core base adv html xml xrc REQUIRED)
 include( "${wxWidgets_USE_FILE}" )
@@ -34,6 +36,17 @@ link_libraries(${wxWidgets_LIBRARIES})
 
 # add include directories
 include_directories("${PROJECT_BINARY_DIR}" "source")
+
+# compile xrc resource file if wxrc is available
+find_program(WXRC_EXECUTABLE wxrc)
+if(WXRC_EXECUTABLE)
+  add_custom_command(
+    OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/source/res/resource.cpp"
+    COMMAND ${WXRC_EXECUTABLE} -c -o "${CMAKE_CURRENT_SOURCE_DIR}/source/res/resource.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/source/res/z2se.xrc"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/res/z2se.xrc"
+    COMMENT "Compiling XRC resources with wxrc..."
+  )
+endif()
 
 # add the sources
 set(SRCS source/GenApp.cc source/GenApp.hh

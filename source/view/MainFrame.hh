@@ -39,6 +39,7 @@ namespace emuWorks {
         DECLARE_EVENT_TABLE()
 
         friend class FileDropTarget;
+        friend class GenApp;
 
       public:
         /**
@@ -256,10 +257,10 @@ namespace emuWorks {
         wxCheckBox *gloveCheck;
         wxCheckBox *raftCheck;
         wxCheckBox *bootsCheck;
-        wxCheckBox *crossCheck;
         wxCheckBox *fluteCheck;
-        wxCheckBox *magicKeyCheck;
+        wxCheckBox *crossCheck;
         wxCheckBox *hammerCheck;
+        wxCheckBox *magicKeyCheck;
 
         std::array<wxCheckBox *, 6> palaceCheck;
         wxSlider *keySlider;
