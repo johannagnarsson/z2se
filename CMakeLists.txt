@@ -42,7 +42,8 @@ find_program(WXRC_EXECUTABLE wxrc)
 if(WXRC_EXECUTABLE)
   add_custom_command(
     OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/source/res/resource.cpp"
-    COMMAND ${WXRC_EXECUTABLE} -c -o "${CMAKE_CURRENT_SOURCE_DIR}/source/res/resource.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/source/res/z2se.xrc"
+    COMMAND ${WXRC_EXECUTABLE} -c -o resource.cpp z2se.xrc
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/source/res"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/res/z2se.xrc"
     COMMENT "Compiling XRC resources with wxrc..."
   )

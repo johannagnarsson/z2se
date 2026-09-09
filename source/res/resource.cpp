@@ -1448,6 +1448,6 @@ void InitXmlResource()
         else wxFileSystem::AddHandler(new wxMemoryFSHandler);
     }
 
-    XRC_ADD_FILE(wxT("XRC_resource/resource.cpp$_home_johann_src_z2se_source_res_z2se.xrc"), xml_res_file_0, xml_res_size_0, wxT("text/xml"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/resource.cpp$_home_johann_src_z2se_source_res_z2se.xrc"));
+    XRC_ADD_FILE(wxT("XRC_resource/resource.cpp$z2se.xrc"), xml_res_file_0, xml_res_size_0, wxT("text/xml"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/resource.cpp$z2se.xrc"));
 }
